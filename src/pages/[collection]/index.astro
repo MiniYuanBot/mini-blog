@@ -1,0 +1,15 @@
+---
+import { collectionNames, type CollectionName } from "../../../site.config";
+import ListingLayout from "../../layouts/ListingLayout.astro";
+export function getStaticPaths() {
+  return collectionNames.map((collection) => ({
+    params: { collection },
+    props: { collection },
+  }));
+}
+interface Props {
+  collection: CollectionName;
+}
+---
+
+<ListingLayout collection={Astro.props.collection} />

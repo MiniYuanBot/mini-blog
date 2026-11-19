@@ -1,0 +1,18 @@
+---
+import { site } from "../../site.config";
+---
+
+<section class="research-section" aria-labelledby="research-heading">
+  <h2 id="research-heading" class="section-label">
+    Research interests
+  </h2>
+  {site.researchInterests.length ? (
+    <ul class="interest-list">
+      {site.researchInterests.map((interest) => (
+        <li>{interest}</li>
+      ))}
+    </ul>
+  ) : (
+    <p class="muted">Research interests have not been listed yet.</p>
+  )}
+</section>

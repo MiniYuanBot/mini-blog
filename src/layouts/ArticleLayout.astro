@@ -1,0 +1,155 @@
+---
+import type { MarkdownHeading } from "astro";
+import type { Entry } from "../lib/content";
+import {
+  entryUrl,
+  formatDate,
+  publicationByline,
+  readingTime,
+} from "../lib/content";
+import { site, sections } from "../../site.config";
+import BaseLayout from "./BaseLayout.astro";
+import TableOfContents from "../components/TableOfContents.astro";
+import TagList from "../components/TagList.astro";
+import ActionLink from "../components/ActionLink.astro";
+import EntryDate from "../components/EntryDate.astro";
+import "../styles/prose.css";
+import "../styles/code.css";
+import "katex/dist/katex.min.css";
+interface Props {
+  entry: Entry;
+  headings: MarkdownHeading[];
+}
+const { entry, headings } = Astro.props;
+const { data } = entry;
+const showSidebar = headings.some(({ depth }) => depth >= 2 && depth <= 4);
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type":
+    entry.collection === "publications" ? "ScholarlyArticle" : "BlogPosting",
+  headline: data.title,
+  description: data.description,
+  inLanguage: data.lang,
+  datePublished: data.published?.toISOString(),
+  dateModified: (data.updated || data.published)?.toISOString(),
+  author:
+    entry.collection === "publications"
+      ? entry.data.authors.length
+        ? entry.data.authors.map((name) => ({ "@type": "Person", name }))
+        : undefined
+      : { "@type": "Person", name: site.name },
+  mainEntityOfPage: new URL(entryUrl(entry), site.url).href,
+};
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  article
+  {structuredData}
+  {showSidebar}
+>
+  <Fragment slot="head">
+    {data.published && (
+      <meta
+        property="article:published_time"
+        content={data.published.toISOString()}
+      />
+    )}
+    {data.updated && (
+      <meta
+        property="article:modified_time"
+        content={data.updated.toISOString()}
+      />
+    )}
+    {data.tags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
+  </Fragment>
+  <header class="article-header" slot="header">
+    <ActionLink
+      class="eyebrow back-link"
+      href={`/${entry.collection}/`}
+      direction="left"
+    >
+      {sections[entry.collection].title}
+    </ActionLink>
+    <h1>{data.title}</h1>
+    <p class="page-description">{data.description}</p>
+    <div class="article-meta">
+      <EntryDate {entry} />
+      <span>{readingTime(entry.body)} min read</span>
+      {data.updated && (
+        <span>
+          Updated{" "}
+          <time datetime={data.updated.toISOString()}>
+            {formatDate(data.updated)}
+          </time>
+        </span>
+      )}
+    </div>
+    {entry.collection === "publications" && publicationByline(entry) && (
+      <p class="article-byline">{publicationByline(entry)}</p>
+    )}
+    {entry.collection === "studies" && entry.data.course && (
+      <p class="article-byline">{entry.data.course}</p>
+    )}
+    <div class="resource-links">
+      {entry.collection === "publications" && (
+        <>
+          {entry.data.paper && (
+            <ActionLink href={entry.data.paper} direction="up-right">
+              Paper
+            </ActionLink>
+          )}
+          {entry.data.code && (
+            <ActionLink href={entry.data.code} direction="up-right">
+              Code
+            </ActionLink>
+          )}
+          {entry.data.doi && (
+            <ActionLink
+              href={`https://doi.org/${entry.data.doi}`}
+              direction="up-right"
+            >
+              DOI
+            </ActionLink>
+          )}
+        </>
+      )}
+      {entry.collection === "projects" && (
+        <>
+          {entry.data.repository && (
+            <ActionLink href={entry.data.repository} direction="up-right">
+              Source
+            </ActionLink>
+          )}
+          {entry.data.website && (
+            <ActionLink href={entry.data.website} direction="up-right">
+              Website
+            </ActionLink>
+          )}
+          {entry.data.status && <span>{entry.data.status}</span>}
+        </>
+      )}
+    </div>
+  </header>
+  <TableOfContents slot="sidebar" {headings} />
+  <article class="prose" id="article-content" lang={data.lang} slot="content">
+    <slot />
+  </article>
+  <footer class="article-footer" slot="after">
+    <TagList tags={data.tags} />
+    <div>
+      <ActionLink href={`/${entry.collection}/`} direction="left">
+        All {sections[entry.collection].title.toLowerCase()}
+      </ActionLink>
+      <ActionLink href="#main" direction="up">
+        Back to top
+      </ActionLink>
+    </div>
+  </footer>
+</BaseLayout>
+<script>
+  import "../scripts/article";
+</script>

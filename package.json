@@ -1,0 +1,51 @@
+{
+  "name": "miniyuan-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview",
+    "notes": "node scripts/import-notes.mjs",
+    "import:notes": "node scripts/import-notes.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:content": "node scripts/test-content.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "diagrams": "node scripts/cache-diagrams.mjs",
+    "verify": "pnpm check && pnpm test && pnpm build && pnpm check:links && pnpm test:content",
+    "ship": "node scripts/deploy.mjs"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.0",
+    "@astrojs/mdx": "^8.0.0",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.1",
+    "katex": "^0.16.38",
+    "mermaid": "^11.17.2",
+    "plantuml-encoder": "^1.4.0",
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
+    "sharp": "^0.34.5",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/node": "^22.19.0",
+    "typescript": "^5.9.3",
+    "@types/hast": "^3.0.4",
+    "@types/mdast": "^4.0.4",
+    "@types/plantuml-encoder": "^1.4.2",
+    "rehype-parse": "^9.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-mdx": "^3.1.1",
+    "unified": "^11.0.5"
+  }
+}

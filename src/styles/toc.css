@@ -1,0 +1,89 @@
+/* The layout owns the sidebar position. Both disclosures share one link list. */
+.toc { padding-left: 1.3rem; border-left: 1px solid var(--line); }
+.toc summary { cursor: pointer; margin-bottom: 0; }
+.toc details > nav { padding-top: 1.2rem; }
+.toc-links { margin: 0; padding: 0; list-style: none; }
+.toc-links li { padding-left: calc(var(--depth) * 0.75rem); margin-block: 0.6rem; }
+.toc-links a {
+  display: block;
+  color: var(--muted);
+  font-size: var(--text-small);
+  line-height: 1.6;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.toc-links a[aria-current="location"] {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+.toc .back-to-top {
+  display: inline-block;
+  margin-top: 1.4rem;
+  color: var(--muted);
+  font-size: var(--text-small);
+  text-decoration: none;
+}
+.toc-mobile { display: none; }
+
+@media (width < 960px) {
+  .toc { display: none; }
+  .toc-mobile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: calc(var(--toc-bar-height, 3rem) + env(safe-area-inset-bottom, 0px));
+    padding: 0 var(--page-gutter) env(safe-area-inset-bottom, 0px);
+    border-top: 1px solid var(--line);
+    background: var(--background);
+    color: var(--foreground);
+  }
+  .toc-toggle {
+    display: flex;
+    align-items: center;
+    min-height: calc(var(--toc-bar-height, 3rem) - 1px);
+    padding-block: 0.7rem;
+    cursor: pointer;
+    font-size: var(--text-label);
+    line-height: 1.5;
+  }
+  .toc-mobile .back-to-top {
+    display: inline-flex;
+    align-items: center;
+    min-height: calc(var(--toc-bar-height, 3rem) - 1px);
+    color: var(--muted);
+    font-size: var(--text-label);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .toc-mobile-panel {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    right: 0;
+    max-height: min(28rem, calc(100svh - var(--mobile-header-height, 4rem) - var(--toc-bar-height, 3rem) - env(safe-area-inset-bottom, 0px)));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.5rem var(--page-gutter);
+    border-block: 1px solid var(--line);
+    background: var(--background);
+  }
+  .toc-mobile .toc-links li { margin-block: 0; }
+  .toc-mobile .toc-links a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0.6rem;
+    font-size: var(--text-label);
+  }
+  .toc-mobile .toc-links a:focus-visible { outline-offset: -2px; }
+}
+
+.toc-links a:focus-visible, .toc .back-to-top:focus-visible,
+.toc-mobile :is(a, summary):focus-visible { color: var(--link-hover); }
+@media (hover: hover) and (pointer: fine) {
+  .toc-links a:hover, .toc .back-to-top:hover,
+  .toc-mobile :is(a, summary):hover { color: var(--link-hover); }
+}

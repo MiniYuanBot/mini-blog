@@ -1,0 +1,83 @@
+---
+import { sections, site, type CollectionName } from "../../site.config";
+import { getEntries } from "../lib/content";
+import { paginate } from "../lib/pagination";
+import BaseLayout from "./BaseLayout.astro";
+import PageHeading from "../components/PageHeading.astro";
+import EntryList from "../components/EntryList.astro";
+import EmptyState from "../components/EmptyState.astro";
+import Pagination from "../components/Pagination.astro";
+import ResearchInterests from "../components/ResearchInterests.astro";
+import ActionLink from "../components/ActionLink.astro";
+interface Props {
+  collection?: CollectionName;
+  tag?: string;
+  page?: number;
+}
+const { collection, tag, page = 1 } = Astro.props;
+const entries = (await getEntries(collection)).filter(
+  (entry) => !tag || entry.data.tags.includes(tag),
+);
+const listing = paginate(entries, page, site.pageSize);
+const config = collection ? sections[collection] : undefined;
+const title = tag ? `Tagged: ${tag}` : config!.title;
+const description = tag
+  ? `Writing and work filed under ${tag}.`
+  : config!.description;
+const basePath = tag ? `/tags/${tag}` : `/${collection}`;
+---
+
+<BaseLayout
+  title={`${title}${page > 1 ? ` — Page ${page}` : ""}`}
+  {description}
+>
+  <Fragment slot="head">
+    {listing.hasPrev && (
+      <link
+        rel="prev"
+        href={
+          new URL(
+            page === 2 ? `${basePath}/` : `${basePath}/page/${page - 1}/`,
+            site.url,
+          )
+        }
+      />
+    )}
+    {listing.hasNext && (
+      <link
+        rel="next"
+        href={new URL(`${basePath}/page/${page + 1}/`, site.url)}
+      />
+    )}
+  </Fragment>
+  <PageHeading
+    slot="header"
+    {title}
+    {description}
+    eyebrow={tag ? "Browse by topic" : "The index"}
+  />
+  <Fragment slot="content">
+    {collection === "publications" && page === 1 && <ResearchInterests />}
+    <div class="listing-bar">
+      <span>
+        {listing.totalItems} {listing.totalItems === 1 ? "entry" : "entries"}
+      </span>
+      <ActionLink href={tag ? "/tags/" : "/search/"} direction="up-right">
+        {tag ? "All tags" : "Search the archive"}
+      </ActionLink>
+    </div>
+    {entries.length ? (
+      <EntryList entries={listing.items} showCollection={!!tag} />
+    ) : (
+      <EmptyState
+        message={config?.empty || "No entries with this tag."}
+        detail="New entries will appear here when published."
+      />
+    )}
+    <Pagination
+      {basePath}
+      page={listing.page}
+      totalPages={listing.totalPages}
+    />
+  </Fragment>
+</BaseLayout>

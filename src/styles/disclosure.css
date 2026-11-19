@@ -1,0 +1,97 @@
+/* Native <details> remains the state and accessibility model. Unsupported
+ * browsers keep its instant, fully usable open/close behavior. */
+:where([data-disclosure="overlay"]) {
+  --disclosure-offset: calc(-1 * var(--motion-distance));
+}
+:where([data-disclosure-direction="up"]) {
+  --disclosure-offset: var(--motion-distance);
+}
+:where([data-disclosure="overlay"]):not([open]) > [data-disclosure-panel] {
+  pointer-events: none;
+}
+
+/* One small chevron replaces the native triangle in content disclosures.
+ * The site menu keeps its hamburger/close icons instead. */
+:where([data-disclosure-chevron], .prose details) > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  list-style: none;
+}
+:where([data-disclosure-chevron], .prose details) > summary::marker { content: ''; }
+:where([data-disclosure-chevron], .prose details) > summary::-webkit-details-marker { display: none; }
+:where([data-disclosure-chevron], .prose details) > summary::before {
+  content: '';
+  flex: none;
+  inline-size: 0.45em;
+  block-size: 0.45em;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+:where([data-disclosure-chevron], .prose details)[open] > summary::before {
+  transform: rotate(45deg);
+}
+:where([data-disclosure-chevron][data-disclosure-direction="up"])[open] > summary::before {
+  transform: rotate(-135deg);
+}
+
+/* Exit painting is enabled only when CSS can also make it immediately inert.
+ * Otherwise the browser's native instant close keeps hidden links out of Tab. */
+@supports selector(details::details-content) and (transition-behavior: allow-discrete) and (interactivity: inert) {
+  :where([data-disclosure], .prose details)::details-content {
+    opacity: 0;
+    transition:
+      opacity var(--motion-duration) var(--motion-ease),
+      content-visibility var(--motion-duration) allow-discrete;
+  }
+  :where([data-disclosure], .prose details)[open]::details-content {
+    opacity: 1;
+  }
+  :where([data-disclosure], .prose details):not([open])::details-content {
+    pointer-events: none;
+    interactivity: inert;
+  }
+
+  /* Transform the panel itself, never its pseudo-element wrapper: a transformed
+   * wrapper would change the containing block of these absolute-positioned menus. */
+  :where([data-disclosure="overlay"]) > [data-disclosure-panel] {
+    translate: 0 var(--disclosure-offset);
+    transition:
+      translate var(--motion-duration) var(--motion-ease),
+      var(--motion-surface-transitions);
+  }
+  :where([data-disclosure="overlay"])[open] > [data-disclosure-panel] {
+    translate: 0 0;
+  }
+  @starting-style {
+    :where([data-disclosure="overlay"])[open] > [data-disclosure-panel] {
+      translate: 0 var(--disclosure-offset);
+    }
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    .prose details > summary {
+      transition:
+        padding-block-end var(--motion-duration) var(--motion-ease),
+        var(--motion-surface-transitions);
+    }
+    :where([data-disclosure="inline"], .prose details) {
+      interpolate-size: allow-keywords;
+    }
+    :where([data-disclosure="inline"], .prose details)::details-content {
+      display: flow-root;
+      block-size: 0;
+      overflow: clip;
+      overflow-clip-margin: 0.4rem;
+      transition:
+        block-size var(--motion-duration) var(--motion-ease),
+        opacity var(--motion-duration) var(--motion-ease),
+        content-visibility var(--motion-duration) allow-discrete;
+    }
+    :where([data-disclosure="inline"], .prose details)[open]::details-content {
+      block-size: auto;
+    }
+  }
+}

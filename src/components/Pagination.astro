@@ -1,0 +1,50 @@
+---
+import { pageHref, pageNumbers } from "../lib/pagination";
+import ActionLink from "./ActionLink.astro";
+interface Props {
+  basePath: string;
+  page: number;
+  totalPages: number;
+}
+const { basePath, page, totalPages } = Astro.props;
+---
+
+{totalPages > 1 && (
+  <nav class="pagination" aria-label="Pagination">
+    <div>
+      {page > 1 && (
+        <ActionLink
+          href={pageHref(basePath, page - 1)}
+          rel="prev"
+          direction="left"
+        >
+          Previous
+        </ActionLink>
+      )}
+    </div>
+    <ol>
+      {pageNumbers(page, totalPages).map((number) => (
+        <li>
+          {number === "gap" ? (
+            <span aria-hidden="true">…</span>
+          ) : number === page ? (
+            <span aria-current="page" aria-label={`Page ${number}`}>
+              {number}
+            </span>
+          ) : (
+            <a href={pageHref(basePath, number)} aria-label={`Page ${number}`}>
+              {number}
+            </a>
+          )}
+        </li>
+      ))}
+    </ol>
+    <div>
+      {page < totalPages && (
+        <ActionLink href={pageHref(basePath, page + 1)} rel="next">
+          Next
+        </ActionLink>
+      )}
+    </div>
+  </nav>
+)}

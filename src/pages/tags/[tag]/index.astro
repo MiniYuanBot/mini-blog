@@ -1,0 +1,15 @@
+---
+import ListingLayout from "../../../layouts/ListingLayout.astro";
+import { getEntries, tagsOf } from "../../../lib/content";
+export async function getStaticPaths() {
+  return tagsOf(await getEntries()).map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+interface Props {
+  tag: string;
+}
+---
+
+<ListingLayout tag={Astro.props.tag} />

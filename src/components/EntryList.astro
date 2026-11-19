@@ -1,0 +1,51 @@
+---
+import type { Entry } from "../lib/content";
+import { entryUrl, publicationByline } from "../lib/content";
+import { sections } from "../../site.config";
+import TagList from "./TagList.astro";
+import ArrowIcon from "./ArrowIcon.astro";
+import EntryDate from "./EntryDate.astro";
+interface Props {
+  entries: Entry[];
+  showCollection?: boolean;
+}
+const { entries, showCollection = false } = Astro.props;
+---
+
+<ol class="entry-list">
+  {entries.map((entry) => (
+    <li>
+      <article class="entry-row" data-arrow-trigger>
+        <div class="entry-meta">
+          <EntryDate {entry} />
+          {showCollection && <span>{sections[entry.collection].title}</span>}
+        </div>
+        <div class="entry-summary">
+          <h2>
+            <a href={entryUrl(entry)}>{entry.data.title}</a>
+          </h2>
+          {entry.collection === "publications" && publicationByline(entry) && (
+            <p class="entry-byline">{publicationByline(entry)}</p>
+          )}
+          {entry.collection === "projects" && entry.data.status && (
+            <p class="entry-byline">{entry.data.status}</p>
+          )}
+          {entry.collection === "studies" && entry.data.course && (
+            <p class="entry-byline">{entry.data.course}</p>
+          )}
+          <p>{entry.data.description}</p>
+          <TagList tags={entry.data.tags} />
+        </div>
+        <a
+          class="entry-arrow"
+          href={entryUrl(entry)}
+          aria-label={`Read ${entry.data.title}`}
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <ArrowIcon direction="up-right" />
+        </a>
+      </article>
+    </li>
+  ))}
+</ol>

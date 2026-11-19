@@ -1,0 +1,59 @@
+---
+import type { MarkdownHeading } from "astro";
+import ActionLink from "./ActionLink.astro";
+import TOCLinks from "./TOCLinks.astro";
+import "../styles/toc.css";
+interface Props {
+  headings: MarkdownHeading[];
+}
+const headings = Astro.props.headings.filter(
+  (heading) => heading.depth >= 2 && heading.depth <= 4,
+);
+---
+
+{headings.length > 0 && (
+  <>
+    <aside class="toc" aria-label="Table of contents">
+      <details open data-disclosure="inline" data-disclosure-chevron>
+        <summary class="eyebrow">On this page</summary>
+        <nav aria-label="Article sections">
+          <TOCLinks {headings} />
+        </nav>
+        <ActionLink class="back-to-top" href="#main" direction="up">
+          Back to top
+        </ActionLink>
+      </details>
+    </aside>
+    <aside class="toc-mobile" aria-label="Article navigation">
+      <details
+        class="toc-menu"
+        data-toc-menu
+        data-disclosure="overlay"
+        data-disclosure-direction="up"
+        data-disclosure-chevron
+      >
+        <summary
+          class="toc-toggle"
+          data-toc-toggle
+          aria-controls="mobile-article-sections"
+        >
+          Contents
+        </summary>
+        <nav
+          class="toc-mobile-panel"
+          id="mobile-article-sections"
+          aria-label="Article sections"
+          data-disclosure-panel
+        >
+          <TOCLinks {headings} />
+        </nav>
+      </details>
+      <ActionLink class="back-to-top" href="#main" direction="up">
+        Back to top
+      </ActionLink>
+    </aside>
+  </>
+)}
+<script>
+  import "../scripts/toc";
+</script>

@@ -1,0 +1,12 @@
+---
+interface Props {
+    message: string;
+    detail?: string;
+}
+const { message, detail } = Astro.props;
+---
+
+<div class="empty-state">
+    <p>{message}</p>
+    {detail && <p class="muted">{detail}</p>}
+</div>

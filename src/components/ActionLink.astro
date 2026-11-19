@@ -1,0 +1,17 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import ArrowIcon, { type ArrowDirection } from "./ArrowIcon.astro";
+
+type Props = HTMLAttributes<"a"> & { direction?: ArrowDirection };
+const { direction = "right", class: className, ...attributes } = Astro.props;
+---
+
+<a {...attributes} class:list={["action-link", className]}>
+  <span class="action-link-content">
+    {direction === "left" && <ArrowIcon {direction} />}
+    <span class="action-link-label">
+      <slot />
+    </span>
+    {direction !== "left" && <ArrowIcon {direction} />}
+  </span>
+</a>

@@ -1,0 +1,24 @@
+---
+import { site } from "../../../../../site.config";
+import ListingLayout from "../../../../layouts/ListingLayout.astro";
+import { getEntries, tagsOf } from "../../../../lib/content";
+import { laterPageParams } from "../../../../lib/pagination";
+export async function getStaticPaths() {
+  const entries = await getEntries();
+  return tagsOf(entries).flatMap((tag) =>
+    laterPageParams(
+      entries.filter((entry) => entry.data.tags.includes(tag)).length,
+      site.pageSize,
+    ).map(({ params, props }) => ({
+      params: { tag, ...params },
+      props: { tag, ...props },
+    })),
+  );
+}
+interface Props {
+  tag: string;
+  page: number;
+}
+---
+
+<ListingLayout {...Astro.props} />

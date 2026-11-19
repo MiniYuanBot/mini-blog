@@ -1,0 +1,48 @@
+/* Shared motion rhythm. Native anchor scrolling keeps browser-controlled timing.
+ * Component transitions compose this color list with their own geometry. */
+:root {
+  --motion-duration-fast: 140ms;
+  --motion-duration: 220ms;
+  --motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --motion-distance: 6px;
+  --motion-surface-transitions:
+    color var(--motion-duration-fast) var(--motion-ease),
+    background-color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease),
+    text-decoration-color var(--motion-duration-fast) var(--motion-ease);
+}
+
+/* Low specificity lets a component add motion without fighting shared rules.
+ * Text with its own hover color needs a transition as well as its parent link. */
+:where(a, button, summary, input, select, .index-title, .index-description,
+  .index-arrow, .tag-index a > span, h1, h2, h3, h4, h5, h6, p, label,
+  figcaption, .muted, .eyebrow, .section-label, .wordmark span, .footer-note,
+  .entry-meta, .tag-list, .search-shortcut, .search-result-meta, .article-meta,
+  .resource-links > span),
+:where(.tag-list a)::before {
+  transition: var(--motion-surface-transitions);
+}
+
+/* Theme changes soften the existing flat surfaces and dividing lines.
+ * Layout, focus outlines, and newly loaded content remain immediate. */
+:where(html, body, .site-header, .header-inner, .site-footer, .page-sidebar,
+  .toc, .toc-mobile, .mobile-nav, .toc-mobile-panel, .home-section,
+  .research-section, .listing-bar, .entry-list > li, .site-index li,
+  .tag-index, .tag-index li, .search-results > li, .article-footer,
+  .prose, .prose pre, .prose code, .prose kbd, .prose th, .prose td,
+  .prose blockquote, .prose details, .prose .callout, .prose .footnotes, hr, mark) {
+  transition: var(--motion-surface-transitions);
+}
+
+:where(.heading-anchor) {
+  transition: var(--motion-surface-transitions),
+    opacity var(--motion-duration-fast) var(--motion-ease);
+}
+
+@media (prefers-reduced-motion: reduce), print {
+  :root {
+    --motion-duration-fast: 0ms;
+    --motion-duration: 0ms;
+    --motion-distance: 0px;
+  }
+}

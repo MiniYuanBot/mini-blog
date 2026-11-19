@@ -1,0 +1,17 @@
+---
+import type { MarkdownHeading } from "astro";
+interface Props {
+  headings: MarkdownHeading[];
+}
+const { headings } = Astro.props;
+---
+
+<ol class="toc-links">
+  {headings.map(({ slug, depth, text }) => (
+    <li style={`--depth: ${depth - 2}`}>
+      <a href={`#${slug}`} data-toc-link>
+        {text.replace(/\s*#$/, "")}
+      </a>
+    </li>
+  ))}
+</ol>

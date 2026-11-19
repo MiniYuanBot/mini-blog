@@ -1,0 +1,8 @@
+{
+  "host": "your-server.example.com",
+  "user": "deploy",
+  "port": 22,
+  "identityFile": "~/.ssh/id_ed25519",
+  "remoteDir": "/var/www/miniyuan-blog",
+  "liveLink": "dist"
+}

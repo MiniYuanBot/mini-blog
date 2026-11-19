@@ -1,0 +1,97 @@
+---
+import { collectionNames, sections, site } from "../../site.config";
+import { getEntries } from "../lib/content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EntryList from "../components/EntryList.astro";
+import EmptyState from "../components/EmptyState.astro";
+import ActionLink from "../components/ActionLink.astro";
+import ArrowIcon from "../components/ArrowIcon.astro";
+const featured = (await getEntries())
+  .filter(({ data }) => data.featured)
+  .slice(0, 4);
+---
+
+<BaseLayout>
+  <header class="home-intro" slot="header">
+    <p class="home-affiliation eyebrow">
+      <span>{site.affiliation}</span>
+      <span>{site.department}</span>
+    </p>
+    <h1>{site.name}</h1>
+    <p class="home-bio">{site.introduction}</p>
+    <ul class="home-links" aria-label="Explore my work">
+      <li>
+        <ActionLink href="/publications/" direction="up-right">
+          Research
+        </ActionLink>
+      </li>
+      <li>
+        <ActionLink href="/explorations/" direction="up-right">
+          Writing
+        </ActionLink>
+      </li>
+      {site.links.map(({ label, url }) => (
+        <li>
+          <ActionLink href={url} direction="up-right">
+            {label}
+          </ActionLink>
+        </li>
+      ))}
+    </ul>
+  </header>
+
+  <Fragment slot="content">
+    <section class="home-section" aria-labelledby="research-title">
+      <h2 class="section-label" id="research-title">
+        Research interests
+      </h2>
+      <div class="home-section-body">
+        {site.researchInterests.length ? (
+          <ul class="interest-list">
+            {site.researchInterests.map((interest) => (
+              <li>{interest}</li>
+            ))}
+          </ul>
+        ) : (
+          <p class="muted">Research interests have not been listed yet.</p>
+        )}
+      </div>
+    </section>
+
+    <section class="home-section" aria-labelledby="featured-title">
+      <h2 class="section-label" id="featured-title">
+        Selected work
+      </h2>
+      <div class="home-section-body">
+        {featured.length ? (
+          <EntryList entries={featured} showCollection />
+        ) : (
+          <EmptyState message="No featured work yet." />
+        )}
+      </div>
+    </section>
+
+    <section class="home-section" aria-labelledby="index-title">
+      <h2 class="section-label" id="index-title">
+        The index
+      </h2>
+      <div class="home-section-body">
+        <ul class="site-index">
+          {collectionNames.map((name) => (
+            <li>
+              <a href={`/${name}/`}>
+                <span class="index-title">{sections[name].title}</span>
+                <span class="index-description">
+                  {sections[name].description}
+                </span>
+                <span class="index-arrow">
+                  <ArrowIcon direction="up-right" />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </Fragment>
+</BaseLayout>

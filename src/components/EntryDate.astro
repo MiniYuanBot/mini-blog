@@ -1,0 +1,15 @@
+---
+import type { Entry } from "../lib/content";
+import { entryDateLabel } from "../lib/content";
+interface Props {
+    entry: Entry;
+}
+const { entry } = Astro.props;
+const label = entryDateLabel(entry);
+---
+
+{entry.data.published ? (
+    <time datetime={entry.data.published.toISOString()}>{label}</time>
+) : (
+    <span>{label}</span>
+)}

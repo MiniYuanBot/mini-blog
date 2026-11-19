@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHeading from "../../components/PageHeading.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import { getEntries, tagsOf } from "../../lib/content";
+const entries = await getEntries();
+const tags = tagsOf(entries);
+---
+
+<BaseLayout
+  title="Tags"
+  description="Browse research, projects, and notes by topic."
+>
+  <PageHeading
+    slot="header"
+    title="Tags"
+    description="A different way into the archive. Follow a topic across research, projects, and notes."
+    eyebrow="Browse by topic"
+  />
+  <Fragment slot="content">
+    {tags.length ? (
+      <ul class="tag-index">
+        {tags.map((tag) => (
+          <li>
+            <a href={`/tags/${tag}/`}>
+              <span>{tag}</span>
+              <span class="tag-count">
+                {
+                  entries.filter((entry) => entry.data.tags.includes(tag))
+                    .length
+                }
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <EmptyState
+        message="No tags yet."
+        detail="Topics will appear here as entries are published."
+      />
+    )}
+  </Fragment>
+</BaseLayout>

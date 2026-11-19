@@ -1,0 +1,31 @@
+# Dependencies and generated output
+node_modules/
+dist/
+.astro/
+.pnpm-store/
+
+# Local tooling, integration fixtures, and note-import backups
+.cache/
+.sites-runtime/
+
+# Local environment and deployment settings
+.env
+.env.*
+!.env.example
+deploy.config.json
+dist-upload.tar.gz
+
+# Logs and temporary files from imports, diagram rendering, and TypeScript
+*.log
+*.tmp
+*.tsbuildinfo
+
+# Operating system metadata
+.DS_Store
+Thumbs.db
+[Dd]esktop.ini
+
+# Keep .plantuml-cache/*.svg versioned for offline builds.
+# Keep pnpm-lock.yaml, notes.config.json, and deploy.config.example.json versioned.
+
+legacy/

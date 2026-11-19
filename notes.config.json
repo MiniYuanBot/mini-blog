@@ -1,0 +1,107 @@
+{
+  "importNotes": [
+    {
+      "from": "../../note-buddy/operating-system/output",
+      "to": "src/content/studies/2026-autumn/operating-systems",
+      "frontmatter": {
+        "course": "Operating Systems",
+        "published": "2026-10-10",
+        "tags": [
+          "2026-autumn",
+          "operating-systems"
+        ],
+        "lang": "zh-CN"
+      },
+      "lectures": {
+        "L01": {
+          "slug": "what-operating-systems-do",
+          "title": "What Operating Systems Do"
+        },
+        "L02": {
+          "slug": "os-overview-and-interrupts",
+          "title": "Operating System Overview and Interrupts"
+        },
+        "L03": {
+          "slug": "interrupts-and-system-calls",
+          "title": "Interrupts, Exceptions, and System Calls"
+        },
+        "L04": {
+          "slug": "process-model",
+          "title": "The Process Model"
+        },
+        "L05": {
+          "slug": "process-control-and-threads",
+          "title": "Process Control and Threads"
+        },
+        "L06": {
+          "slug": "processor-scheduling",
+          "title": "Introduction to Processor Scheduling"
+        },
+        "L07": {
+          "slug": "scheduling-algorithms",
+          "title": "Processor Scheduling Algorithms"
+        },
+        "L08": {
+          "slug": "multiprocessor-and-linux-scheduling",
+          "title": "Multiprocessor and Linux Scheduling"
+        },
+        "L09": {
+          "slug": "memory-management",
+          "title": "Memory Management Fundamentals"
+        }
+      },
+      "notes": {
+        "questions.md": {
+          "title": "Operating Systems: Review Questions"
+        }
+      }
+    },
+    {
+      "from": "../../note-buddy/computer-organization-and-architecture/output",
+      "to": "src/content/studies/2026-autumn/computer-organization-and-architecture",
+      "frontmatter": {
+        "course": "Computer Organization and Architecture",
+        "published": "2026-10-08",
+        "tags": [
+          "2026-autumn",
+          "computer-architecture"
+        ],
+        "lang": "zh-CN"
+      },
+      "lectures": {
+        "L01": {
+          "slug": "computer-architecture-intro",
+          "title": "Introduction to Computer Architecture"
+        },
+        "L02": {
+          "slug": "performance-and-risc-v",
+          "title": "Performance and the RISC-V Instruction Set"
+        },
+        "L03": {
+          "slug": "risc-v-alu-and-datapath",
+          "title": "RISC-V ALU and Datapath"
+        },
+        "L04": {
+          "slug": "branch-prediction-and-multiple-issue",
+          "title": "Branch Prediction and Multiple-Issue Processors"
+        },
+        "L05": {
+          "slug": "dynamic-scheduling",
+          "title": "Dynamic Scheduling"
+        },
+        "L06": {
+          "slug": "caches",
+          "title": "Caches"
+        },
+        "L07": {
+          "slug": "llm-inference-and-memory-bottlenecks",
+          "title": "LLM Inference and Memory Bottlenecks"
+        },
+        "L08": {
+          "slug": "dram",
+          "title": "DRAM"
+        }
+      }
+    }
+  ]
+}

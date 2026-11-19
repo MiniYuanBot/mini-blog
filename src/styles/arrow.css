@@ -1,0 +1,51 @@
+/* A small directional gesture adapted from the old Button component.
+ * The link keeps its own typography and layout; only the SVG parts move. */
+.arrow-icon {
+  --arrow-shift: 0px;
+  --arrow-scale: 0;
+  --arrow-opacity: 0;
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.12em;
+  pointer-events: none;
+}
+.arrow-shaft {
+  transform-box: view-box;
+  transform-origin: 18px 12px;
+  transform: translateX(var(--arrow-shift)) scaleX(var(--arrow-scale));
+  opacity: var(--arrow-opacity);
+  transition: transform var(--motion-duration-fast) var(--motion-ease),
+    opacity var(--motion-duration-fast) var(--motion-ease);
+}
+.arrow-head {
+  transform: translateX(var(--arrow-shift));
+  transition: transform var(--motion-duration-fast) var(--motion-ease);
+}
+.action-link-content { display: inline-flex; align-items: center; gap: 0.35em; max-width: 100%; }
+.action-link-label { min-width: 0; }
+
+:is(a, button):focus-visible .arrow-icon,
+:is(.action-trigger, [data-arrow-trigger]):focus-visible .arrow-icon,
+:is(.action-trigger, [data-arrow-trigger]):has(:focus-visible) .arrow-icon {
+  --arrow-shift: 2px;
+  --arrow-scale: 1;
+  --arrow-opacity: 1;
+}
+@media (hover: hover) {
+  :is(a, button, .action-trigger, [data-arrow-trigger]):hover .arrow-icon {
+    --arrow-shift: 2px;
+    --arrow-scale: 1;
+    --arrow-opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .arrow-icon {
+    --arrow-shift: 2px;
+    --arrow-scale: 1;
+    --arrow-opacity: 1;
+  }
+  .arrow-icon .arrow-shaft, .arrow-icon .arrow-head { transition: none; }
+}

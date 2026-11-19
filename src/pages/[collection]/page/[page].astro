@@ -1,0 +1,31 @@
+---
+import {
+  collectionNames,
+  site,
+  type CollectionName,
+} from "../../../../site.config";
+import { getEntries } from "../../../lib/content";
+import { laterPageParams } from "../../../lib/pagination";
+import ListingLayout from "../../../layouts/ListingLayout.astro";
+export async function getStaticPaths() {
+  return (
+    await Promise.all(
+      collectionNames.map(async (collection) => {
+        const entries = await getEntries(collection);
+        return laterPageParams(entries.length, site.pageSize).map(
+          ({ params, props }) => ({
+            params: { collection, ...params },
+            props: { collection, ...props },
+          }),
+        );
+      }),
+    )
+  ).flat();
+}
+interface Props {
+  collection: CollectionName;
+  page: number;
+}
+---
+
+<ListingLayout {...Astro.props} />

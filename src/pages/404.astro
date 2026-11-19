@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHeading from "../components/PageHeading.astro";
+import ActionLink from "../components/ActionLink.astro";
+---
+
+<BaseLayout
+  title="Page not found"
+  description="The requested page could not be found."
+  noindex
+>
+  <PageHeading
+    slot="header"
+    title="A missing page."
+    description="This page may have moved, or the address may be incorrect."
+    eyebrow="404 / Page not found"
+  />
+  <nav slot="content" class="not-found-links" aria-label="Find another page">
+    <ActionLink href="/" direction="left">
+      Back home
+    </ActionLink>
+    <ActionLink href="/search/" direction="up-right">
+      Search the site
+    </ActionLink>
+  </nav>
+</BaseLayout>

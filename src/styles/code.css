@@ -1,0 +1,33 @@
+/* A small window frame around Shiki's unmodified, horizontally scrollable code. */
+.prose .code-block { min-width: 0; max-width: 100%; margin-block: 1.8em; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: 0 3px 12px rgb(0 0 0 / 4%); }
+.prose .code-header { display: flex; align-items: center; gap: 0.8rem; min-height: 44px; padding: 0.25rem 0.55rem 0.25rem 1rem; border-bottom: 1px solid var(--line); color: var(--muted); font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.3; user-select: none; }
+.prose .code-window-dots { display: flex; flex: none; gap: 6px; }
+.prose .code-window-dots > span { width: 9px; height: 9px; border-radius: 50%; background: #ff5f57; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 7%); }
+.prose .code-window-dots > span:nth-child(2) { background: #febc2e; }
+.prose .code-window-dots > span:nth-child(3) { background: #28c840; }
+.prose .code-language { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prose .code-copy-status { margin-left: auto; white-space: nowrap; font-family: var(--font-sans); font-size: 0.75rem; }
+.prose .code-copy { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 34px; height: 34px; padding: 7px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: var(--muted); }
+.prose .code-copy:focus-visible { outline-offset: 1px; }
+.prose .code-copy[data-state="copied"] { color: var(--accent); }
+.prose .code-copy .code-icon-check { display: none; }
+.prose .code-copy[data-state="copied"] .code-icon-copy { display: none; }
+.prose .code-copy[data-state="copied"] .code-icon-check { display: block; }
+.prose .code-block > pre { margin: 0; padding: 1.1rem 1.3rem; border: 0; border-radius: 0; overflow-x: auto; overscroll-behavior-x: contain; tab-size: 4; }
+.prose .code-block > pre:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.prose .code-block > pre > code { display: block; width: max-content; min-width: 100%; white-space: pre; overflow-wrap: normal; word-break: normal; }
+@media (hover: hover) and (pointer: fine) {
+  .prose .code-copy:hover { color: var(--foreground); border-color: var(--line); background: var(--background); }
+}
+@media (max-width: 560px) {
+  .prose .code-header { gap: 0.65rem; padding-left: 0.85rem; }
+  .prose .code-block > pre { padding: 1rem; }
+  .prose .code-copy { width: 38px; height: 38px; }
+}
+@media print {
+  .prose .code-block { overflow: visible; border-radius: 0; box-shadow: none; background: white; }
+  .prose .code-header { min-height: 0; padding: 0.4rem 0.8rem; }
+  .prose .code-window-dots, .prose .code-copy, .prose .code-copy-status { display: none; }
+  .prose .code-block > pre { overflow: visible; }
+  .prose .code-block > pre > code { width: auto; min-width: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+}
