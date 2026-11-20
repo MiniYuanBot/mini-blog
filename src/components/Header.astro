@@ -9,6 +9,7 @@ const links = [
     title: sections[name].title,
     href: `/${name}/`,
   })),
+  { title: "Friends", href: "/friends/" },
 ];
 const isCurrent = (href: string) =>
   href === "/" ? path === "/" : path.startsWith(href);

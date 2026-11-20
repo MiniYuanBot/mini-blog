@@ -1,0 +1,170 @@
+---
+import { friends, site } from "../../site.config";
+import ActionLink from "../components/ActionLink.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const description = "Friends’ blogs and why I like reading them.";
+const requestTemplate = [
+  "Blog: miniyuan",
+  "URL: https://www.miniyuan.site/",
+  "About: A forever stupid boy.",
+].join("\r\n");
+const subject = encodeURIComponent("Friend link request");
+const body = encodeURIComponent(requestTemplate);
+const issueUrl = `${site.contact.issues}/new?title=${subject}&body=${body}`;
+const emailUrl = `mailto:${site.contact.email}?subject=${subject}&body=${body}`;
+---
+
+<BaseLayout title="Friends" {description}>
+  <header slot="header" class="page-heading">
+    <h1>Friends</h1>
+    <p class="page-description">
+      {friends.length
+        ? description
+        : "My first blog recommendation will go here."}
+    </p>
+  </header>
+
+  <div class="friends-content" slot="content">
+    {friends.length > 0 && (
+      <ul class="friend-list" aria-label="Recommended blogs">
+        {friends.map(({ name, url, recommendation }) => (
+          <li>
+            <ActionLink href={url} direction="up-right" class="friend-name">
+              {name}
+            </ActionLink>
+            <span class="friend-note muted">{recommendation}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <section class="link-request" aria-label="Friend link requests">
+      <p>
+        To suggest your blog, replace my details below with yours and
+        <a href={issueUrl} target="_blank">
+          open a GitHub issue
+        </a>{" "}
+        or{" "}
+        <a href={emailUrl} target="_blank">
+          email me
+        </a>
+        .
+      </p>
+      <figure class="request-template muted" data-code-block>
+        <figcaption>
+          <span>Example request</span>
+          <span
+            class="code-copy-status"
+            role="status"
+            aria-live="polite"
+          ></span>
+          <button
+            type="button"
+            data-code-copy
+            aria-label="Copy request template"
+            hidden
+          >
+            Copy
+          </button>
+        </figcaption>
+        <pre><code>{requestTemplate}</code></pre>
+      </figure>
+      <p class="review-note muted">
+        I will read each blog before adding it here. I only list ad-free blogs
+        with content suitable for the audience.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initCodeBlocks } from "../scripts/code-blocks";
+  initCodeBlocks();
+</script>
+
+<style>
+  .friends-content {
+    max-width: var(--reading-width);
+  }
+  .friend-list {
+    display: grid;
+    grid-template-columns: fit-content(40%) minmax(0, 1fr);
+    column-gap: 0.875rem;
+    margin: 0 0 var(--section-space);
+    padding: 0;
+    list-style: none;
+  }
+  .friend-list li {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    align-items: baseline;
+    row-gap: 0.1rem;
+    padding-block: 0.4rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  .friend-list li + li {
+    border-top: 1px solid var(--line);
+  }
+  .friend-name {
+    justify-self: start;
+    min-width: 0;
+    max-width: 100%;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    text-decoration: none;
+  }
+  .friend-note {
+    min-width: 0;
+    font-size: var(--text-label);
+  }
+  @media (width < 20rem) {
+    .friend-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .link-request {
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+    font-size: var(--text-label);
+  }
+  .link-request p {
+    margin-bottom: 0;
+  }
+  .request-template {
+    margin: 0.75rem 0;
+    padding: 0.5rem 0.625rem 0.75rem;
+    border-inline-start: 2px solid var(--line);
+    background: var(--surface);
+  }
+  .request-template figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-small);
+  }
+  .code-copy-status {
+    margin-inline-start: auto;
+  }
+  .request-template button {
+    padding: 0.125rem 0.25rem;
+    border: 0;
+    background: transparent;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .request-template pre {
+    margin: 0.35rem 0 0;
+    font: var(--text-small) / 1.6 var(--font-mono);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .request-template code {
+    font: inherit;
+  }
+  .review-note {
+    font-size: var(--text-small);
+  }
+</style>

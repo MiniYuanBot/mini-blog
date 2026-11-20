@@ -2,7 +2,7 @@
  * Add research interests and external profiles only when ready to publish them.
  */
 export const site = {
-  name: 'miniyuan',
+  name: 'miniblog',
   title: 'miniblog: miniyuan is getting stronger!',
   description: 'The personal website of miniyuan: research, projects, explorations, and study notes.',
   url: 'https://miniyuan.site',
@@ -14,12 +14,31 @@ export const site = {
   links: [] as { label: string; url: string }[],
   contact: {
     github: 'https://github.com/MiniYuanBot',
+    issues: 'https://github.com/MiniYuanBot/mini-blog/issues',
     phone: '+8618813123558',
     phoneLabel: '+86 188 1312 3558',
     email: 'miniyuan@stu.pku.edu.cn',
   },
   pageSize: 10,
 };
+
+// Add reviewed blogs in the order you want them to appear on the Friends page.
+export const friends: {
+  name: string;
+  url: string;
+  recommendation: string;
+}[] = [
+    {
+      name: 'luoluo',
+      url: 'https://luoluo926.github.io/',
+      recommendation: 'A forever stupid girl.'
+    },
+    {
+      name: 'Kristina',
+      url: 'https://itskristina.space/',
+      recommendation: 'I solemnly swear I am up to no good.'
+    }
+  ];
 
 export const sections = {
   publications: { title: 'Publications', description: 'Research directions and published work.', singular: 'publication', empty: 'No publications listed yet.' },

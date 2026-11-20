@@ -1,0 +1,14 @@
+{
+    // line-length:
+    "MD013": false,
+    // no-duplicate-heading
+    "MD024": false,
+    // no-blanks-blockquote
+    "MD028": false,
+    // blanks-around-lists
+    // "MD032": false,
+    // no-inline-html
+    "MD033": false,
+    // no-emphasis-as-heading
+    "MD036": false
+}

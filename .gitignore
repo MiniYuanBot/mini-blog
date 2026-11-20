@@ -29,3 +29,4 @@ Thumbs.db
 # Keep pnpm-lock.yaml, notes.config.json, and deploy.config.example.json versioned.
 
 legacy/
+*.code-workspace

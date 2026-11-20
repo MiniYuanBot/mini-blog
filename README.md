@@ -1,6 +1,6 @@
-# miniyuan Blog
+# Mini Blog
 
-A mini-website for research, projects, technical writing, and study notes~
+A mini-blog recording miniyuan's research, projects, technical writing, and study notes~
 
 ## Documentation
 

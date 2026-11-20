@@ -73,7 +73,15 @@ try {
     await cp(join(projectRoot, filename), join(fixtureRoot, filename));
   }
   const fixtureConfig = join(fixtureRoot, 'site.config.ts');
-  await writeFile(fixtureConfig, `${await readFile(fixtureConfig, 'utf8')}\n// Deterministic pagination size for this isolated integration test.\nsite.pageSize = 10;\n`);
+  const fixtureFriend = {
+    name: 'Field Notes', url: 'https://example.org/field-notes/', recommendation: 'I come back for the sketches.',
+  };
+  await writeFile(fixtureConfig, [
+    await readFile(fixtureConfig, 'utf8'),
+    'site.pageSize = 10;',
+    `friends.push(${JSON.stringify(fixtureFriend)});`,
+    '',
+  ].join('\n'));
   await cp(join(projectRoot, 'public'), join(fixtureRoot, 'public'), { recursive: true });
   for (const name of ['publications', 'projects', 'explorations', 'studies']) {
     await mkdir(join(fixtureRoot, 'src', 'content', name), { recursive: true });
@@ -338,6 +346,19 @@ try {
   assert.doesNotMatch(sitemap, /\/search\/|\/404\//);
   const home = await readOutput('index.html');
   assert.match(home, /Integration fixture: content pipeline/);
+
+  const friendsPage = await readOutput('friends/index.html');
+  const [friendRow] = elements(friendsPage, (node) => node.tagName === 'li'
+    && node.children.some((child) => child.tagName === 'a' && child.properties.href === fixtureFriend.url));
+  assert.ok(friendRow && textContent(friendRow).includes(fixtureFriend.recommendation));
+  const [template] = elements(friendsPage, (node) => node.tagName === 'pre');
+  const requestLinks = elements(friendsPage, (node) => node.tagName === 'a' && node.properties.href.includes('body='));
+  assert.equal(requestLinks.length, 2, 'Both issue and email requests need a prefilled body');
+  for (const link of requestLinks) {
+    const body = new URL(link.properties.href).searchParams.get('body');
+    assert.equal(body.replaceAll('\r\n', '\n'), textContent(template), 'The prefilled request must match the copyable example');
+  }
+
   for (const file of await walk(join(fixtureRoot, 'dist'))) {
     if (!/\.(?:html|xml|json|js)$/.test(file)) continue;
     assert.doesNotMatch(await readFile(file, 'utf8'), /Hidden(?:Draft|Future)(?:Marker|Body)88/, `Private content leaked into ${relative(fixtureRoot, file)}`);

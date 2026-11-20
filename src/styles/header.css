@@ -163,3 +163,7 @@
   .theme-toggle { min-width: 44px; justify-content: center; }
   .theme-toggle #theme-label { display: none; }
 }
+
+@media (width < 20rem) {
+  .header-inner { --page-gutter: 0.5rem; gap: 0.25rem; }
+}

@@ -19,7 +19,9 @@
     "check:links": "node scripts/check-links.mjs",
     "diagrams": "node scripts/cache-diagrams.mjs",
     "verify": "pnpm check && pnpm test && pnpm build && pnpm check:links && pnpm test:content",
-    "ship": "node scripts/deploy.mjs"
+    "ship": "node scripts/deploy.mjs",
+    "ship:list": "node scripts/deploy.mjs --list",
+    "ship:clean": "node scripts/deploy.mjs --clean"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.0",

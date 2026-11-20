@@ -1,0 +1,18 @@
+---
+import ArrowIcon from "./ArrowIcon.astro";
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+}
+const { href, title, description } = Astro.props;
+---
+
+<li>
+  <a {href}>
+    <span class="index-title">{title}</span>
+    <span class="index-description">{description}</span>
+    <span class="index-arrow"><ArrowIcon direction="up-right" /></span>
+  </a>
+</li>

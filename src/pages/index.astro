@@ -5,7 +5,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import EntryList from "../components/EntryList.astro";
 import EmptyState from "../components/EmptyState.astro";
 import ActionLink from "../components/ActionLink.astro";
-import ArrowIcon from "../components/ArrowIcon.astro";
+import SiteIndexItem from "../components/SiteIndexItem.astro";
 const featured = (await getEntries())
   .filter(({ data }) => data.featured)
   .slice(0, 4);
@@ -19,15 +19,25 @@ const featured = (await getEntries())
     </p>
     <h1>{site.name}</h1>
     <p class="home-bio">{site.introduction}</p>
-    <ul class="home-links" aria-label="Explore my work">
+    <ul class="home-links" aria-label="Explore the site">
       <li>
         <ActionLink href="/publications/" direction="up-right">
           Research
         </ActionLink>
       </li>
       <li>
+        <ActionLink href="/projects/" direction="up-right">
+          Projects
+        </ActionLink>
+      </li>
+      <li>
         <ActionLink href="/explorations/" direction="up-right">
           Writing
+        </ActionLink>
+      </li>
+      <li>
+        <ActionLink href="/friends/" direction="up-right">
+          Friends
         </ActionLink>
       </li>
       {site.links.map(({ label, url }) => (
@@ -78,17 +88,11 @@ const featured = (await getEntries())
       <div class="home-section-body">
         <ul class="site-index">
           {collectionNames.map((name) => (
-            <li>
-              <a href={`/${name}/`}>
-                <span class="index-title">{sections[name].title}</span>
-                <span class="index-description">
-                  {sections[name].description}
-                </span>
-                <span class="index-arrow">
-                  <ArrowIcon direction="up-right" />
-                </span>
-              </a>
-            </li>
+            <SiteIndexItem
+              href={`/${name}/`}
+              title={sections[name].title}
+              description={sections[name].description}
+            />
           ))}
         </ul>
       </div>
